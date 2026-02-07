@@ -627,6 +627,21 @@ document.addEventListener("DOMContentLoaded", async () => {
           await evalScope(miniModule, webaudioModule, drawModule);
         },
       });
+
+      // Protect against library bug: StrudelMirror.afterEval sets
+      // this.widgets = options.meta?.widgets which can be undefined,
+      // then calls this.widgets.filter() → crash.
+      // Use a property trap so .widgets/.miniLocations always return arrays.
+      const safeArray = (target: Record<string, unknown>, prop: string) => {
+        let value: unknown[] = [];
+        Object.defineProperty(target, prop, {
+          get: () => value,
+          set: (v: unknown) => { value = Array.isArray(v) ? v : []; },
+          configurable: true,
+        });
+      };
+      safeArray(strudelMirror, "widgets");
+      safeArray(strudelMirror, "miniLocations");
       editorView = strudelMirror.editor;
       strudelMirror.reconfigureExtension?.("isPatternHighlightingEnabled", true);
       console.log("[Editor] StrudelMirror initialized");
