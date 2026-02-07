@@ -11,30 +11,13 @@ export interface WebSocketData {
 const clients = new Map<string, ServerWebSocket<WebSocketData>>();
 
 // Shared state
-let currentPattern = `// Welcome to Apfelstrudel! 🥧
-// A live-coding music environment powered by Strudel
-// Press Play or ask the AI to get started!
-
-stack(
-  // drums (local ApfelKit samples)
+let currentPattern = `stack(
   s("bd [~ bd] sd [bd ~ ]"),
-
-  s("[~ hh]*4")
-    .gain(.6),
-
-  // bass
+  s("[~ hh]*4").gain(.6),
   note("<c2 [c2 eb2] f2 [f2 ab2]>")
-    .s("sawtooth")
-    .lpf(600)
-    .decay(.15)
-    .sustain(0),
-
-  // melody
+    .s("sawtooth").lpf(600).decay(.15).sustain(0),
   note("<[c4 eb4 g4] [f4 ab4 c5] [eb4 g4 bb4] [ab4 c5 eb5]>/2")
-    .s("triangle")
-    .gain(.35)
-    .delay(.25)
-    .room(.3)
+    .s("triangle").gain(.35).delay(.25).room(.3)
 )`;
 let isPlaying = false;
 let cps = 0.5;
