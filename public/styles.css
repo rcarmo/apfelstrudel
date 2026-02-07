@@ -13,6 +13,9 @@
   --error: #f85149;
   --font-mono: 'JetBrains Mono', monospace;
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  /* Strudel highlight variables */
+  --foreground: #e6edf3;
+  --background: #0d1117;
 }
 
 * {
@@ -217,6 +220,14 @@ html, body {
 #code-editor .cm-scroller {
   overflow: auto;
   padding: 0.5rem 0;
+}
+
+/* Strudel live note highlighting — ensure outlines are visible */
+#code-editor .cm-line span[style*="outline"] {
+  border-radius: 2px;
+}
+#code-editor .cm-line span[style*="background-color"] {
+  border-radius: 2px;
 }
 
 #visualization {
