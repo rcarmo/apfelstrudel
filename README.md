@@ -214,6 +214,14 @@ The AI assistant has access to these tools:
                               └────────────────┘
 ```
 
+## Vendored Samples
+
+Audio samples from the [Dirt-Samples](https://github.com/tidalcycles/Dirt-Samples) library (218 instruments, ~2000 files) are vendored in `public/vendor/strudel/samples/dirt/` for offline convenience. These samples were created by the [TidalCycles](https://tidalcycles.org) community and are redistributed here temporarily to enable fully offline operation.
+
+Fonts ([Inter](https://rsms.me/inter/) by Rasmus Andersson, [JetBrains Mono](https://www.jetbrains.com/lp/mono/) by JetBrains) are also vendored locally in `public/vendor/fonts/`.
+
+If you are packaging or forking this project, please review the upstream licenses for these assets.
+
 ## License
 
 AGPL-3.0 — Required by Strudel.cc dependency.
@@ -223,6 +231,9 @@ See [LICENSE](LICENSE) for details.
 ## Credits
 
 - [Strudel.cc](https://strudel.cc) by Felix Roos — The amazing live coding environment
+- [Dirt-Samples](https://github.com/tidalcycles/Dirt-Samples) by the TidalCycles community — Audio samples
+- [Inter](https://rsms.me/inter/) by Rasmus Andersson — UI typeface
+- [JetBrains Mono](https://www.jetbrains.com/lp/mono/) by JetBrains — Editor typeface
 - [Bun](https://bun.sh) — Fast JavaScript runtime
 - Inspired by [rcarmo/steward](https://github.com/rcarmo/steward) — Tool harness pattern
 
