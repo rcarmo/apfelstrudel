@@ -118,11 +118,12 @@ function setEditorCode(code: string): void {
 }
 
 /**
- * Initialize Strudel REPL and CodeMirror editor.
+ * Initialize Strudel REPL (fallback only — used when StrudelMirror is not available).
  * Must be called after a user gesture so the AudioContext can be created.
  */
 async function initializeStrudel(): Promise<void> {
   if (strudelRepl) return;
+  if (strudelMirror) return; // StrudelMirror has its own repl
   if (strudelInitPromise) return strudelInitPromise;
   strudelInitPromise = (async () => {
     try {
@@ -136,7 +137,7 @@ async function initializeStrudel(): Promise<void> {
           await evalScope(miniModule, webaudioModule, drawModule);
         },
       });
-      console.log("[Strudel] Initialized");
+      console.log("[Strudel] Initialized (fallback REPL)");
       updateStatus("Ready");
     } catch (err) {
       console.error("[Strudel] Init error:", err);
@@ -149,6 +150,7 @@ async function initializeStrudel(): Promise<void> {
 
 /** Ensure strudel is initialized, triggering init on first user gesture. */
 async function ensureStrudel(): Promise<void> {
+  if (strudelMirror) return; // StrudelMirror handles its own lifecycle
   if (!strudelRepl) await initializeStrudel();
 }
 
@@ -646,15 +648,32 @@ document.addEventListener("DOMContentLoaded", async () => {
   connectWebSocket();
 
   // Defer strudel init to first user interaction (AudioContext requires gesture)
-  const initOnGesture = () => {
+  const initOnGesture = async () => {
+    document.removeEventListener("pointerdown", initOnGesture);
+    document.removeEventListener("keydown", initOnGesture);
+
     const ctx = getAudioContext();
     if (ctx.state === "suspended") {
       ctx.resume().catch((err) => console.warn("[Audio] Resume failed", err));
     }
-    ensureSamplesLoaded();
-    initializeStrudel();
-    document.removeEventListener("pointerdown", initOnGesture);
-    document.removeEventListener("keydown", initOnGesture);
+    await ensureSamplesLoaded();
+
+    if (strudelMirror) {
+      // StrudelMirror has its own repl — just run prebake
+      try {
+        const miniModule = await import("@strudel/mini");
+        const webaudioModule = await import("@strudel/webaudio");
+        const drawModule = await import("@strudel/draw");
+        await evalScope(miniModule, webaudioModule, drawModule);
+        console.log("[Strudel] evalScope loaded for StrudelMirror");
+      } catch (err) {
+        console.error("[Strudel] evalScope error:", err);
+      }
+      updateStatus("Ready");
+    } else {
+      // Fallback: init full REPL
+      await initializeStrudel();
+    }
   };
   document.addEventListener("pointerdown", initOnGesture);
   document.addEventListener("keydown", initOnGesture);
