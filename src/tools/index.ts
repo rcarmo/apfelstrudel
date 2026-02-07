@@ -32,6 +32,8 @@ import {
   listInstrumentsTool,
 } from "./reference.ts";
 
+import { getErrorsDefinition, getErrorsTool } from "./errors.ts";
+
 import { manageTodoDefinition, manageTodoTool } from "./todo.ts";
 
 /**
@@ -48,6 +50,7 @@ export const toolHandlers: Record<string, ToolHandler> = {
   get_strudel_help: getStrudelHelpTool,
   list_samples: listSamplesTool,
   list_instruments: listInstrumentsTool,
+  get_errors: getErrorsTool,
   manage_todo: manageTodoTool,
 };
 
@@ -65,5 +68,6 @@ export const toolDefinitions: ToolDefinition[] = [
   getStrudelHelpDefinition,
   listSamplesDefinition,
   listInstrumentsDefinition,
+  getErrorsDefinition,
   manageTodoDefinition,
 ];

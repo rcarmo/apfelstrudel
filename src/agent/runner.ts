@@ -25,6 +25,7 @@ export async function runAgent(userMessage: string, options: RunnerOptions): Pro
     currentPattern: options.getState().pattern,
     isPlaying: options.getState().playing,
     cps: options.getState().cps,
+    evalErrors: [],
     broadcast: options.broadcast as (message: unknown) => void,
   };
   setAppState(appState);

@@ -1,6 +1,7 @@
 import type { ServerWebSocket } from "bun";
 import { runAgent } from "../agent/index.ts";
 import type { ClientMessage, ServerMessage } from "../shared/types.ts";
+import { pushEvalError } from "../tools/shared.ts";
 
 export interface WebSocketData {
   id: string;
@@ -98,6 +99,7 @@ export const websocketHandlers = {
           const prefix = `[WS][client ${ws.data.id}]`;
           if (level === "error") {
             console.error(prefix, data.message, data.stack ?? "");
+            pushEvalError(data.message);
           } else if (level === "warn") {
             console.warn(prefix, data.message);
           } else {

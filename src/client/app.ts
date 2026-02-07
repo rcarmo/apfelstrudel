@@ -625,6 +625,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           const webaudioModule = await import("@strudel/webaudio");
           const drawModule = await import("@strudel/draw");
           await evalScope(miniModule, webaudioModule, drawModule);
+          await ensureSamplesLoaded();
         },
       });
 

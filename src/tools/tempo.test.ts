@@ -9,6 +9,7 @@ function createMockState(overrides?: Partial<AppState>): AppState {
     currentPattern: 's("bd sd")',
     isPlaying: false,
     cps: 0.5,
+    evalErrors: [],
     broadcast: (msg: unknown) => messages.push(msg),
     ...overrides,
   };

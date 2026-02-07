@@ -17,8 +17,8 @@ describe("tools/index registry", () => {
   });
 
   it("has expected number of tools", () => {
-    expect(toolDefinitions.length).toBe(11);
-    expect(Object.keys(toolHandlers).length).toBe(11);
+    expect(toolDefinitions.length).toBe(12);
+    expect(Object.keys(toolHandlers).length).toBe(12);
   });
 
   it("all definitions have required fields", () => {

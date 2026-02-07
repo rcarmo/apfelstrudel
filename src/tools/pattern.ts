@@ -1,6 +1,6 @@
 import type { ToolDefinition } from "../shared/types.ts";
 import type { ToolHandler } from "./shared.ts";
-import { getAppState } from "./shared.ts";
+import { getAppState, clearEvalErrors, getRecentEvalErrors } from "./shared.ts";
 
 // =============================================================================
 // get_pattern - Read current pattern code
@@ -53,12 +53,27 @@ export const setPatternTool: ToolHandler = async (args) => {
   const state = getAppState();
   state.currentPattern = code;
 
+  // Clear old errors before sending new pattern
+  clearEvalErrors();
+
   // Notify frontend to update pattern
   state.broadcast({
     type: "set_pattern",
     code,
     autoplay,
   });
+
+  // Wait briefly for eval errors to arrive from the client
+  await new Promise((r) => setTimeout(r, 600));
+
+  const errors = getRecentEvalErrors(2000);
+  if (errors.length > 0) {
+    return {
+      id: "set_pattern",
+      output: `Pattern updated but evaluation failed:\n${errors.join("\n")}\n\nPlease fix the code and try again.`,
+      error: true,
+    };
+  }
 
   return {
     id: "set_pattern",
@@ -103,12 +118,25 @@ export const modifyPatternTool: ToolHandler = async (args) => {
   const oldCode = state.currentPattern;
   state.currentPattern = newCode;
 
+  clearEvalErrors();
+
   // Notify frontend
   state.broadcast({
     type: "set_pattern",
     code: newCode,
     autoplay: true,
   });
+
+  await new Promise((r) => setTimeout(r, 600));
+
+  const errors = getRecentEvalErrors(2000);
+  if (errors.length > 0) {
+    return {
+      id: "modify_pattern",
+      output: `Applied ${transformation}${details ? ` (${details})` : ""} but evaluation failed:\n${errors.join("\n")}\n\nPrevious code: ${oldCode}\nNew code: ${newCode}\n\nPlease fix the code and try again.`,
+      error: true,
+    };
+  }
 
   return {
     id: "modify_pattern",

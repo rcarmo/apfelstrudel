@@ -102,6 +102,7 @@ describe("runAgent", () => {
       currentPattern: 's("bd sd")',
       isPlaying: false,
       cps: 0.5,
+      evalErrors: [],
       broadcast: (msg: unknown) => broadcasted.push(msg as ServerMessage),
     });
 
@@ -142,6 +143,7 @@ describe("runAgent", () => {
       currentPattern: "",
       isPlaying: false,
       cps: 0.5,
+      evalErrors: [],
       broadcast: (msg: unknown) => broadcasted.push(msg as ServerMessage),
     });
 
@@ -181,6 +183,7 @@ describe("runAgent", () => {
       currentPattern: "",
       isPlaying: false,
       cps: 0.5,
+      evalErrors: [],
       broadcast: () => {
         throw new Error("broadcast boom");
       },
@@ -219,6 +222,7 @@ describe("runAgent", () => {
       currentPattern: "",
       isPlaying: false,
       cps: 0.5,
+      evalErrors: [],
       broadcast: (msg: unknown) => broadcasted.push(msg as ServerMessage),
     });
 
@@ -250,6 +254,7 @@ describe("runAgent", () => {
       currentPattern: "",
       isPlaying: false,
       cps: 0.5,
+      evalErrors: [],
       broadcast: (msg: unknown) => broadcasted.push(msg as ServerMessage),
     });
 
@@ -284,6 +289,7 @@ describe("runAgent", () => {
       currentPattern: "",
       isPlaying: false,
       cps: 0.5,
+      evalErrors: [],
       broadcast: (msg: unknown) => broadcasted.push(msg as ServerMessage),
     });
 

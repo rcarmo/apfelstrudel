@@ -1,558 +1,572 @@
 {
-  "ApfelKit_RolandTR808_bass": [
-    "bass.wav"
-  ],
-  "ApfelKit_RolandTR808_bd": [
-    "bd.wav",
-    "bd2.wav"
-  ],
-  "ApfelKit_RolandTR808_bell": [
-    "bell.wav"
-  ],
-  "ApfelKit_RolandTR808_cb": [
-    "cb.wav"
-  ],
-  "ApfelKit_RolandTR808_ch": [
-    "hh.wav",
-    "hh2.wav"
-  ],
-  "ApfelKit_RolandTR808_cl": [
-    "cl.wav"
-  ],
-  "ApfelKit_RolandTR808_cp": [
-    "cp.wav"
-  ],
-  "ApfelKit_RolandTR808_crash": [
-    "crash.wav"
-  ],
-  "ApfelKit_RolandTR808_fx": [
-    "fx.wav"
-  ],
-  "ApfelKit_RolandTR808_hh": [
-    "hh.wav",
-    "hh2.wav"
-  ],
-  "ApfelKit_RolandTR808_ht": [
-    "ht.wav"
-  ],
-  "ApfelKit_RolandTR808_lead": [
-    "lead.wav"
-  ],
-  "ApfelKit_RolandTR808_lt": [
-    "lt.wav"
-  ],
-  "ApfelKit_RolandTR808_ma": [
-    "ma.wav"
-  ],
-  "ApfelKit_RolandTR808_mt": [
-    "mt.wav"
-  ],
-  "ApfelKit_RolandTR808_noise": [
-    "noise.wav"
-  ],
-  "ApfelKit_RolandTR808_oh": [
-    "oh.wav"
-  ],
-  "ApfelKit_RolandTR808_organ": [
-    "organ.wav"
-  ],
-  "ApfelKit_RolandTR808_pad": [
-    "pad.wav"
-  ],
-  "ApfelKit_RolandTR808_perc": [
-    "perc.wav"
-  ],
-  "ApfelKit_RolandTR808_pluck": [
-    "pluck.wav"
-  ],
-  "ApfelKit_RolandTR808_ride": [
-    "ride.wav"
-  ],
-  "ApfelKit_RolandTR808_rim": [
-    "rim.wav"
-  ],
-  "ApfelKit_RolandTR808_sd": [
-    "sd.wav",
-    "sd2.wav"
-  ],
-  "ApfelKit_RolandTR808_shaker": [
-    "shaker.wav"
-  ],
-  "ApfelKit_RolandTR909_RolandTR808_bass": [
-    "bass.wav"
-  ],
-  "ApfelKit_RolandTR909_RolandTR808_bd": [
-    "bd.wav",
-    "bd2.wav"
-  ],
-  "ApfelKit_RolandTR909_RolandTR808_bell": [
-    "bell.wav"
-  ],
-  "ApfelKit_RolandTR909_RolandTR808_cb": [
-    "cb.wav"
-  ],
-  "ApfelKit_RolandTR909_RolandTR808_ch": [
-    "hh.wav",
-    "hh2.wav"
-  ],
-  "ApfelKit_RolandTR909_RolandTR808_cl": [
-    "cl.wav"
-  ],
-  "ApfelKit_RolandTR909_RolandTR808_cp": [
-    "cp.wav"
-  ],
-  "ApfelKit_RolandTR909_RolandTR808_crash": [
-    "crash.wav"
-  ],
-  "ApfelKit_RolandTR909_RolandTR808_fx": [
-    "fx.wav"
-  ],
-  "ApfelKit_RolandTR909_RolandTR808_hh": [
-    "hh.wav",
-    "hh2.wav"
-  ],
-  "ApfelKit_RolandTR909_RolandTR808_ht": [
-    "ht.wav"
-  ],
-  "ApfelKit_RolandTR909_RolandTR808_lead": [
-    "lead.wav"
-  ],
-  "ApfelKit_RolandTR909_RolandTR808_lt": [
-    "lt.wav"
-  ],
-  "ApfelKit_RolandTR909_RolandTR808_ma": [
-    "ma.wav"
-  ],
-  "ApfelKit_RolandTR909_RolandTR808_mt": [
-    "mt.wav"
-  ],
-  "ApfelKit_RolandTR909_RolandTR808_noise": [
-    "noise.wav"
-  ],
-  "ApfelKit_RolandTR909_RolandTR808_oh": [
-    "oh.wav"
-  ],
-  "ApfelKit_RolandTR909_RolandTR808_organ": [
-    "organ.wav"
-  ],
-  "ApfelKit_RolandTR909_RolandTR808_pad": [
-    "pad.wav"
-  ],
-  "ApfelKit_RolandTR909_RolandTR808_perc": [
-    "perc.wav"
-  ],
-  "ApfelKit_RolandTR909_RolandTR808_pluck": [
-    "pluck.wav"
-  ],
-  "ApfelKit_RolandTR909_RolandTR808_ride": [
-    "ride.wav"
-  ],
-  "ApfelKit_RolandTR909_RolandTR808_rim": [
-    "rim.wav"
-  ],
-  "ApfelKit_RolandTR909_RolandTR808_sd": [
-    "sd.wav",
-    "sd2.wav"
-  ],
-  "ApfelKit_RolandTR909_RolandTR808_shaker": [
-    "shaker.wav"
-  ],
-  "ApfelKit_RolandTR909_bass": [
-    "bass.wav"
-  ],
-  "ApfelKit_RolandTR909_bd": [
-    "bd.wav",
-    "bd2.wav"
-  ],
-  "ApfelKit_RolandTR909_bell": [
-    "bell.wav"
-  ],
-  "ApfelKit_RolandTR909_cb": [
-    "cb.wav"
-  ],
-  "ApfelKit_RolandTR909_ch": [
-    "hh.wav",
-    "hh2.wav"
-  ],
-  "ApfelKit_RolandTR909_cl": [
-    "cl.wav"
-  ],
-  "ApfelKit_RolandTR909_cp": [
-    "cp.wav"
-  ],
-  "ApfelKit_RolandTR909_crash": [
-    "crash.wav"
-  ],
-  "ApfelKit_RolandTR909_fx": [
-    "fx.wav"
-  ],
-  "ApfelKit_RolandTR909_hh": [
-    "hh.wav",
-    "hh2.wav"
-  ],
-  "ApfelKit_RolandTR909_ht": [
-    "ht.wav"
-  ],
-  "ApfelKit_RolandTR909_lead": [
-    "lead.wav"
-  ],
-  "ApfelKit_RolandTR909_lt": [
-    "lt.wav"
-  ],
-  "ApfelKit_RolandTR909_ma": [
-    "ma.wav"
-  ],
-  "ApfelKit_RolandTR909_mt": [
-    "mt.wav"
-  ],
-  "ApfelKit_RolandTR909_noise": [
-    "noise.wav"
-  ],
-  "ApfelKit_RolandTR909_oh": [
-    "oh.wav"
-  ],
-  "ApfelKit_RolandTR909_organ": [
-    "organ.wav"
-  ],
-  "ApfelKit_RolandTR909_pad": [
-    "pad.wav"
-  ],
-  "ApfelKit_RolandTR909_perc": [
-    "perc.wav"
-  ],
-  "ApfelKit_RolandTR909_pluck": [
-    "pluck.wav"
-  ],
-  "ApfelKit_RolandTR909_ride": [
-    "ride.wav"
-  ],
-  "ApfelKit_RolandTR909_rim": [
-    "rim.wav"
-  ],
-  "ApfelKit_RolandTR909_sd": [
-    "sd.wav",
-    "sd2.wav"
-  ],
-  "ApfelKit_RolandTR909_shaker": [
-    "shaker.wav"
-  ],
-  "ApfelKit_bass": [
-    "bass.wav"
-  ],
-  "ApfelKit_bd": [
-    "bd.wav",
-    "bd2.wav"
-  ],
-  "ApfelKit_bell": [
-    "bell.wav"
-  ],
-  "ApfelKit_cb": [
-    "cb.wav"
-  ],
-  "ApfelKit_ch": [
-    "hh.wav",
-    "hh2.wav"
-  ],
-  "ApfelKit_cl": [
-    "cl.wav"
-  ],
-  "ApfelKit_cp": [
-    "cp.wav"
-  ],
-  "ApfelKit_crash": [
-    "crash.wav"
-  ],
-  "ApfelKit_fx": [
-    "fx.wav"
-  ],
-  "ApfelKit_hh": [
-    "hh.wav",
-    "hh2.wav"
-  ],
-  "ApfelKit_ht": [
-    "ht.wav"
-  ],
-  "ApfelKit_lead": [
-    "lead.wav"
-  ],
-  "ApfelKit_lt": [
-    "lt.wav"
-  ],
-  "ApfelKit_ma": [
-    "ma.wav"
-  ],
-  "ApfelKit_mt": [
-    "mt.wav"
-  ],
-  "ApfelKit_noise": [
-    "noise.wav"
-  ],
-  "ApfelKit_oh": [
-    "oh.wav"
-  ],
-  "ApfelKit_organ": [
-    "organ.wav"
-  ],
-  "ApfelKit_pad": [
-    "pad.wav"
-  ],
-  "ApfelKit_perc": [
-    "perc.wav"
-  ],
-  "ApfelKit_pluck": [
-    "pluck.wav"
-  ],
-  "ApfelKit_ride": [
-    "ride.wav"
-  ],
-  "ApfelKit_rim": [
-    "rim.wav"
-  ],
-  "ApfelKit_sd": [
-    "sd.wav",
-    "sd2.wav"
-  ],
-  "ApfelKit_shaker": [
-    "shaker.wav"
-  ],
-  "RolandTR808_bass": [
-    "bass.wav"
-  ],
-  "RolandTR808_bd": [
-    "bd.wav",
-    "bd2.wav"
-  ],
-  "RolandTR808_bell": [
-    "bell.wav"
-  ],
-  "RolandTR808_cb": [
-    "cb.wav"
-  ],
-  "RolandTR808_ch": [
-    "hh.wav",
-    "hh2.wav"
-  ],
-  "RolandTR808_cl": [
-    "cl.wav"
-  ],
-  "RolandTR808_cp": [
-    "cp.wav"
-  ],
-  "RolandTR808_crash": [
-    "crash.wav"
-  ],
-  "RolandTR808_fx": [
-    "fx.wav"
-  ],
-  "RolandTR808_hh": [
-    "hh.wav",
-    "hh2.wav"
-  ],
-  "RolandTR808_ht": [
-    "ht.wav"
-  ],
-  "RolandTR808_lead": [
-    "lead.wav"
-  ],
-  "RolandTR808_lt": [
-    "lt.wav"
-  ],
-  "RolandTR808_ma": [
-    "ma.wav"
-  ],
-  "RolandTR808_mt": [
-    "mt.wav"
-  ],
-  "RolandTR808_noise": [
-    "noise.wav"
-  ],
-  "RolandTR808_oh": [
-    "oh.wav"
-  ],
-  "RolandTR808_organ": [
-    "organ.wav"
-  ],
-  "RolandTR808_pad": [
-    "pad.wav"
-  ],
-  "RolandTR808_perc": [
-    "perc.wav"
-  ],
-  "RolandTR808_pluck": [
-    "pluck.wav"
-  ],
-  "RolandTR808_ride": [
-    "ride.wav"
-  ],
-  "RolandTR808_rim": [
-    "rim.wav"
-  ],
-  "RolandTR808_sd": [
-    "sd.wav",
-    "sd2.wav"
-  ],
-  "RolandTR808_shaker": [
-    "shaker.wav"
-  ],
-  "RolandTR909_RolandTR808_bass": [
-    "bass.wav"
-  ],
-  "RolandTR909_RolandTR808_bd": [
-    "bd.wav",
-    "bd2.wav"
-  ],
-  "RolandTR909_RolandTR808_bell": [
-    "bell.wav"
-  ],
-  "RolandTR909_RolandTR808_cb": [
-    "cb.wav"
-  ],
-  "RolandTR909_RolandTR808_ch": [
-    "hh.wav",
-    "hh2.wav"
-  ],
-  "RolandTR909_RolandTR808_cl": [
-    "cl.wav"
-  ],
-  "RolandTR909_RolandTR808_cp": [
-    "cp.wav"
-  ],
-  "RolandTR909_RolandTR808_crash": [
-    "crash.wav"
-  ],
-  "RolandTR909_RolandTR808_fx": [
-    "fx.wav"
-  ],
-  "RolandTR909_RolandTR808_hh": [
-    "hh.wav",
-    "hh2.wav"
-  ],
-  "RolandTR909_RolandTR808_ht": [
-    "ht.wav"
-  ],
-  "RolandTR909_RolandTR808_lead": [
-    "lead.wav"
-  ],
-  "RolandTR909_RolandTR808_lt": [
-    "lt.wav"
-  ],
-  "RolandTR909_RolandTR808_ma": [
-    "ma.wav"
-  ],
-  "RolandTR909_RolandTR808_mt": [
-    "mt.wav"
-  ],
-  "RolandTR909_RolandTR808_noise": [
-    "noise.wav"
-  ],
-  "RolandTR909_RolandTR808_oh": [
-    "oh.wav"
-  ],
-  "RolandTR909_RolandTR808_organ": [
-    "organ.wav"
-  ],
-  "RolandTR909_RolandTR808_pad": [
-    "pad.wav"
-  ],
-  "RolandTR909_RolandTR808_perc": [
-    "perc.wav"
-  ],
-  "RolandTR909_RolandTR808_pluck": [
-    "pluck.wav"
-  ],
-  "RolandTR909_RolandTR808_ride": [
-    "ride.wav"
-  ],
-  "RolandTR909_RolandTR808_rim": [
-    "rim.wav"
-  ],
-  "RolandTR909_RolandTR808_sd": [
-    "sd.wav",
-    "sd2.wav"
-  ],
-  "RolandTR909_RolandTR808_shaker": [
-    "shaker.wav"
-  ],
-  "RolandTR909_bass": [
-    "bass.wav"
-  ],
-  "RolandTR909_bd": [
-    "bd.wav",
-    "bd2.wav"
-  ],
-  "RolandTR909_bell": [
-    "bell.wav"
-  ],
-  "RolandTR909_cb": [
-    "cb.wav"
-  ],
-  "RolandTR909_ch": [
-    "hh.wav",
-    "hh2.wav"
-  ],
-  "RolandTR909_cl": [
-    "cl.wav"
-  ],
-  "RolandTR909_cp": [
-    "cp.wav"
-  ],
-  "RolandTR909_crash": [
-    "crash.wav"
-  ],
-  "RolandTR909_fx": [
-    "fx.wav"
-  ],
-  "RolandTR909_hh": [
-    "hh.wav",
-    "hh2.wav"
-  ],
-  "RolandTR909_ht": [
-    "ht.wav"
-  ],
-  "RolandTR909_lead": [
-    "lead.wav"
-  ],
-  "RolandTR909_lt": [
-    "lt.wav"
-  ],
-  "RolandTR909_ma": [
-    "ma.wav"
-  ],
-  "RolandTR909_mt": [
-    "mt.wav"
-  ],
-  "RolandTR909_noise": [
-    "noise.wav"
-  ],
-  "RolandTR909_oh": [
-    "oh.wav"
-  ],
-  "RolandTR909_organ": [
-    "organ.wav"
-  ],
-  "RolandTR909_pad": [
-    "pad.wav"
-  ],
-  "RolandTR909_perc": [
-    "perc.wav"
-  ],
-  "RolandTR909_pluck": [
-    "pluck.wav"
-  ],
-  "RolandTR909_ride": [
-    "ride.wav"
-  ],
-  "RolandTR909_rim": [
-    "rim.wav"
-  ],
-  "RolandTR909_sd": [
-    "sd.wav",
-    "sd2.wav"
-  ],
-  "RolandTR909_shaker": [
-    "shaker.wav"
-  ],
   "_base": "/vendor/strudel/samples/",
+  "ApfelKit_RolandTR808": {
+    "bass": [
+      "bass.wav"
+    ],
+    "bd": [
+      "bd.wav",
+      "bd2.wav"
+    ],
+    "bell": [
+      "bell.wav"
+    ],
+    "cb": [
+      "cb.wav"
+    ],
+    "ch": [
+      "hh.wav",
+      "hh2.wav"
+    ],
+    "cl": [
+      "cl.wav"
+    ],
+    "cp": [
+      "cp.wav"
+    ],
+    "crash": [
+      "crash.wav"
+    ],
+    "fx": [
+      "fx.wav"
+    ],
+    "hh": [
+      "hh.wav",
+      "hh2.wav"
+    ],
+    "ht": [
+      "ht.wav"
+    ],
+    "lead": [
+      "lead.wav"
+    ],
+    "lt": [
+      "lt.wav"
+    ],
+    "ma": [
+      "ma.wav"
+    ],
+    "mt": [
+      "mt.wav"
+    ],
+    "noise": [
+      "noise.wav"
+    ],
+    "oh": [
+      "oh.wav"
+    ],
+    "organ": [
+      "organ.wav"
+    ],
+    "pad": [
+      "pad.wav"
+    ],
+    "perc": [
+      "perc.wav"
+    ],
+    "pluck": [
+      "pluck.wav"
+    ],
+    "ride": [
+      "ride.wav"
+    ],
+    "rim": [
+      "rim.wav"
+    ],
+    "sd": [
+      "sd.wav",
+      "sd2.wav"
+    ],
+    "shaker": [
+      "shaker.wav"
+    ]
+  },
+  "ApfelKit_RolandTR909_RolandTR808": {
+    "bass": [
+      "bass.wav"
+    ],
+    "bd": [
+      "bd.wav",
+      "bd2.wav"
+    ],
+    "bell": [
+      "bell.wav"
+    ],
+    "cb": [
+      "cb.wav"
+    ],
+    "ch": [
+      "hh.wav",
+      "hh2.wav"
+    ],
+    "cl": [
+      "cl.wav"
+    ],
+    "cp": [
+      "cp.wav"
+    ],
+    "crash": [
+      "crash.wav"
+    ],
+    "fx": [
+      "fx.wav"
+    ],
+    "hh": [
+      "hh.wav",
+      "hh2.wav"
+    ],
+    "ht": [
+      "ht.wav"
+    ],
+    "lead": [
+      "lead.wav"
+    ],
+    "lt": [
+      "lt.wav"
+    ],
+    "ma": [
+      "ma.wav"
+    ],
+    "mt": [
+      "mt.wav"
+    ],
+    "noise": [
+      "noise.wav"
+    ],
+    "oh": [
+      "oh.wav"
+    ],
+    "organ": [
+      "organ.wav"
+    ],
+    "pad": [
+      "pad.wav"
+    ],
+    "perc": [
+      "perc.wav"
+    ],
+    "pluck": [
+      "pluck.wav"
+    ],
+    "ride": [
+      "ride.wav"
+    ],
+    "rim": [
+      "rim.wav"
+    ],
+    "sd": [
+      "sd.wav",
+      "sd2.wav"
+    ],
+    "shaker": [
+      "shaker.wav"
+    ]
+  },
+  "ApfelKit_RolandTR909": {
+    "bass": [
+      "bass.wav"
+    ],
+    "bd": [
+      "bd.wav",
+      "bd2.wav"
+    ],
+    "bell": [
+      "bell.wav"
+    ],
+    "cb": [
+      "cb.wav"
+    ],
+    "ch": [
+      "hh.wav",
+      "hh2.wav"
+    ],
+    "cl": [
+      "cl.wav"
+    ],
+    "cp": [
+      "cp.wav"
+    ],
+    "crash": [
+      "crash.wav"
+    ],
+    "fx": [
+      "fx.wav"
+    ],
+    "hh": [
+      "hh.wav",
+      "hh2.wav"
+    ],
+    "ht": [
+      "ht.wav"
+    ],
+    "lead": [
+      "lead.wav"
+    ],
+    "lt": [
+      "lt.wav"
+    ],
+    "ma": [
+      "ma.wav"
+    ],
+    "mt": [
+      "mt.wav"
+    ],
+    "noise": [
+      "noise.wav"
+    ],
+    "oh": [
+      "oh.wav"
+    ],
+    "organ": [
+      "organ.wav"
+    ],
+    "pad": [
+      "pad.wav"
+    ],
+    "perc": [
+      "perc.wav"
+    ],
+    "pluck": [
+      "pluck.wav"
+    ],
+    "ride": [
+      "ride.wav"
+    ],
+    "rim": [
+      "rim.wav"
+    ],
+    "sd": [
+      "sd.wav",
+      "sd2.wav"
+    ],
+    "shaker": [
+      "shaker.wav"
+    ]
+  },
+  "ApfelKit": {
+    "bass": [
+      "bass.wav"
+    ],
+    "bd": [
+      "bd.wav",
+      "bd2.wav"
+    ],
+    "bell": [
+      "bell.wav"
+    ],
+    "cb": [
+      "cb.wav"
+    ],
+    "ch": [
+      "hh.wav",
+      "hh2.wav"
+    ],
+    "cl": [
+      "cl.wav"
+    ],
+    "cp": [
+      "cp.wav"
+    ],
+    "crash": [
+      "crash.wav"
+    ],
+    "fx": [
+      "fx.wav"
+    ],
+    "hh": [
+      "hh.wav",
+      "hh2.wav"
+    ],
+    "ht": [
+      "ht.wav"
+    ],
+    "lead": [
+      "lead.wav"
+    ],
+    "lt": [
+      "lt.wav"
+    ],
+    "ma": [
+      "ma.wav"
+    ],
+    "mt": [
+      "mt.wav"
+    ],
+    "noise": [
+      "noise.wav"
+    ],
+    "oh": [
+      "oh.wav"
+    ],
+    "organ": [
+      "organ.wav"
+    ],
+    "pad": [
+      "pad.wav"
+    ],
+    "perc": [
+      "perc.wav"
+    ],
+    "pluck": [
+      "pluck.wav"
+    ],
+    "ride": [
+      "ride.wav"
+    ],
+    "rim": [
+      "rim.wav"
+    ],
+    "sd": [
+      "sd.wav",
+      "sd2.wav"
+    ],
+    "shaker": [
+      "shaker.wav"
+    ]
+  },
+  "RolandTR808": {
+    "bass": [
+      "bass.wav"
+    ],
+    "bd": [
+      "bd.wav",
+      "bd2.wav"
+    ],
+    "bell": [
+      "bell.wav"
+    ],
+    "cb": [
+      "cb.wav"
+    ],
+    "ch": [
+      "hh.wav",
+      "hh2.wav"
+    ],
+    "cl": [
+      "cl.wav"
+    ],
+    "cp": [
+      "cp.wav"
+    ],
+    "crash": [
+      "crash.wav"
+    ],
+    "fx": [
+      "fx.wav"
+    ],
+    "hh": [
+      "hh.wav",
+      "hh2.wav"
+    ],
+    "ht": [
+      "ht.wav"
+    ],
+    "lead": [
+      "lead.wav"
+    ],
+    "lt": [
+      "lt.wav"
+    ],
+    "ma": [
+      "ma.wav"
+    ],
+    "mt": [
+      "mt.wav"
+    ],
+    "noise": [
+      "noise.wav"
+    ],
+    "oh": [
+      "oh.wav"
+    ],
+    "organ": [
+      "organ.wav"
+    ],
+    "pad": [
+      "pad.wav"
+    ],
+    "perc": [
+      "perc.wav"
+    ],
+    "pluck": [
+      "pluck.wav"
+    ],
+    "ride": [
+      "ride.wav"
+    ],
+    "rim": [
+      "rim.wav"
+    ],
+    "sd": [
+      "sd.wav",
+      "sd2.wav"
+    ],
+    "shaker": [
+      "shaker.wav"
+    ]
+  },
+  "RolandTR909_RolandTR808": {
+    "bass": [
+      "bass.wav"
+    ],
+    "bd": [
+      "bd.wav",
+      "bd2.wav"
+    ],
+    "bell": [
+      "bell.wav"
+    ],
+    "cb": [
+      "cb.wav"
+    ],
+    "ch": [
+      "hh.wav",
+      "hh2.wav"
+    ],
+    "cl": [
+      "cl.wav"
+    ],
+    "cp": [
+      "cp.wav"
+    ],
+    "crash": [
+      "crash.wav"
+    ],
+    "fx": [
+      "fx.wav"
+    ],
+    "hh": [
+      "hh.wav",
+      "hh2.wav"
+    ],
+    "ht": [
+      "ht.wav"
+    ],
+    "lead": [
+      "lead.wav"
+    ],
+    "lt": [
+      "lt.wav"
+    ],
+    "ma": [
+      "ma.wav"
+    ],
+    "mt": [
+      "mt.wav"
+    ],
+    "noise": [
+      "noise.wav"
+    ],
+    "oh": [
+      "oh.wav"
+    ],
+    "organ": [
+      "organ.wav"
+    ],
+    "pad": [
+      "pad.wav"
+    ],
+    "perc": [
+      "perc.wav"
+    ],
+    "pluck": [
+      "pluck.wav"
+    ],
+    "ride": [
+      "ride.wav"
+    ],
+    "rim": [
+      "rim.wav"
+    ],
+    "sd": [
+      "sd.wav",
+      "sd2.wav"
+    ],
+    "shaker": [
+      "shaker.wav"
+    ]
+  },
+  "RolandTR909": {
+    "bass": [
+      "bass.wav"
+    ],
+    "bd": [
+      "bd.wav",
+      "bd2.wav"
+    ],
+    "bell": [
+      "bell.wav"
+    ],
+    "cb": [
+      "cb.wav"
+    ],
+    "ch": [
+      "hh.wav",
+      "hh2.wav"
+    ],
+    "cl": [
+      "cl.wav"
+    ],
+    "cp": [
+      "cp.wav"
+    ],
+    "crash": [
+      "crash.wav"
+    ],
+    "fx": [
+      "fx.wav"
+    ],
+    "hh": [
+      "hh.wav",
+      "hh2.wav"
+    ],
+    "ht": [
+      "ht.wav"
+    ],
+    "lead": [
+      "lead.wav"
+    ],
+    "lt": [
+      "lt.wav"
+    ],
+    "ma": [
+      "ma.wav"
+    ],
+    "mt": [
+      "mt.wav"
+    ],
+    "noise": [
+      "noise.wav"
+    ],
+    "oh": [
+      "oh.wav"
+    ],
+    "organ": [
+      "organ.wav"
+    ],
+    "pad": [
+      "pad.wav"
+    ],
+    "perc": [
+      "perc.wav"
+    ],
+    "pluck": [
+      "pluck.wav"
+    ],
+    "ride": [
+      "ride.wav"
+    ],
+    "rim": [
+      "rim.wav"
+    ],
+    "sd": [
+      "sd.wav",
+      "sd2.wav"
+    ],
+    "shaker": [
+      "shaker.wav"
+    ]
+  },
   "bass": [
     "bass.wav"
   ],

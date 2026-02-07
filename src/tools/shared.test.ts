@@ -10,6 +10,7 @@ describe("setAppState / getAppState", () => {
       currentPattern: "s('bd')",
       isPlaying: false,
       cps: 0.5,
+      evalErrors: [],
       broadcast: () => {},
     };
     setAppState(state);
@@ -22,6 +23,7 @@ describe("setAppState / getAppState", () => {
       currentPattern: "note('c4 e4 g4')",
       isPlaying: true,
       cps: 1.0,
+      evalErrors: [],
       broadcast,
     };
     setAppState(state);
