@@ -420,9 +420,8 @@ export const listInstrumentsDefinition: ToolDefinition = {
 /** Dirt-Samples manifest: maps bank name → array of file paths */
 type SampleManifest = Record<string, string[] | string>;
 
-const DIRT_SAMPLES_URL =
-  "https://raw.githubusercontent.com/tidalcycles/Dirt-Samples/master/strudel.json";
 const LOCAL_SAMPLES_PATH = "./public/vendor/strudel/samples/strudel.json";
+const DIRT_SAMPLES_PATH = "./public/vendor/strudel/samples/dirt-samples.json";
 
 let cachedManifest: SampleManifest | null = null;
 let manifestError: string | null = null;
@@ -443,40 +442,23 @@ async function loadManifest(): Promise<SampleManifest> {
 
   const merged: SampleManifest = {};
 
-  // 1. Load local vendored samples
-  try {
-    const localFile = Bun.file(LOCAL_SAMPLES_PATH);
-    if (await localFile.exists()) {
-      const local = (await localFile.json()) as SampleManifest;
-      for (const [k, v] of Object.entries(local)) {
-        if (k !== "_base") merged[k] = v;
+  // Load vendored manifests (no network required)
+  for (const path of [LOCAL_SAMPLES_PATH, DIRT_SAMPLES_PATH]) {
+    try {
+      const file = Bun.file(path);
+      if (await file.exists()) {
+        const data = (await file.json()) as SampleManifest;
+        for (const [k, v] of Object.entries(data)) {
+          if (k !== "_base") merged[k] = v;
+        }
       }
+    } catch {
+      // ignore individual file load failures
     }
-  } catch {
-    // ignore local load failures
-  }
-
-  // 2. Fetch Dirt-Samples manifest from GitHub
-  try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 8000);
-    const res = await fetch(DIRT_SAMPLES_URL, { signal: controller.signal });
-    clearTimeout(timeout);
-    if (res.ok) {
-      const remote = (await res.json()) as SampleManifest;
-      for (const [k, v] of Object.entries(remote)) {
-        if (k !== "_base") merged[k] = v;
-      }
-    }
-  } catch (err) {
-    manifestError =
-      `Could not fetch Dirt-Samples from GitHub: ${err instanceof Error ? err.message : String(err)}`;
   }
 
   if (Object.keys(merged).length === 0) {
-    throw new Error(
-      manifestError ?? "No sample manifest could be loaded"
-    );
+    throw new Error("No sample manifest could be loaded");
   }
 
   cachedManifest = merged;

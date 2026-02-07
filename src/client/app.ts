@@ -70,13 +70,13 @@ let samplesLoaded = false;
 async function ensureSamplesLoaded(): Promise<void> {
   if (samplesLoaded) return;
   try {
-    // Load local fallback samples first (always available offline)
+    // Load local samples (always available offline)
     await samples("/vendor/strudel/samples/strudel.json");
     console.log("[Samples] Loaded local samples");
 
-    // Then load the full Dirt-Samples collection from GitHub (hundreds of kits)
-    await samples("github:tidalcycles/dirt-samples");
-    console.log("[Samples] Loaded Dirt-Samples from GitHub");
+    // Load vendored Dirt-Samples manifest (audio fetched on-demand from GitHub)
+    await samples("/vendor/strudel/samples/dirt-samples.json");
+    console.log("[Samples] Loaded Dirt-Samples manifest");
 
     samplesLoaded = true;
   } catch (err) {
