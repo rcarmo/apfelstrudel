@@ -100,8 +100,6 @@ export const websocketHandlers = {
 
         case "pattern_update":
           currentPattern = data.code;
-          // Broadcast to other clients
-          broadcast({ type: "set_pattern", code: data.code });
           break;
 
         case "transport":

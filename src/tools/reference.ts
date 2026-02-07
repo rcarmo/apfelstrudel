@@ -239,8 +239,10 @@ Example: s("bd").euclid(3,8) = "bd ~ ~ bd ~ ~ bd ~"
 Popular: (3,8)=tresillo, (5,8)=cinquillo, (7,16)=Brazilian`,
 
   synths: `Built-in synthesizer waveforms:
-sine, sawtooth, square, triangle — basic oscillators
+sine, sawtooth, square, triangle — basic oscillators (aliases: sin, saw, sqr, tri)
+supersaw, pulse, sbd (synth bass drum), bytebeat — extended oscillators
 white, pink, brown — noise types
+ZZFX: zzfx, z_sine, z_sawtooth, z_triangle, z_square, z_tan, z_noise
 Default for note() is triangle
 Example: note("c3 e3 g3").s("sawtooth")
 FM: .fm(index).fmh(ratio) for complex timbres

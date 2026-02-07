@@ -61,9 +61,7 @@ window.addEventListener("resize", resizeVizCanvas);
 const drawCtx = vizCanvas.getContext("2d") as CanvasRenderingContext2D;
 
 function getAudioTime(): number {
-  const ctx = getAudioContext();
-  if (ctx.state === "running") return ctx.currentTime;
-  return performance.now() / 1000;
+  return getAudioContext().currentTime;
 }
 
 let samplesLoaded = false;
@@ -358,7 +356,6 @@ async function playPattern(): Promise<void> {
  * Stop playback
  */
 async function stopPattern(): Promise<void> {
-  await ensureStrudel();
   if (strudelMirror) {
     try {
       await strudelMirror.stop();
@@ -366,7 +363,7 @@ async function stopPattern(): Promise<void> {
       console.error("[StrudelMirror] Stop error:", err);
     }
   }
-  hush();
+  try { hush(); } catch (_) { /* hush() requires initStrudel repl; safe to ignore */ }
   isPlaying = false;
   updatePlayButton();
   updateStatus("Stopped");
@@ -605,7 +602,17 @@ document.addEventListener("mouseup", () => {
 
 // Initialize on load
 document.addEventListener("DOMContentLoaded", async () => {
-  const defaultCode = "// Welcome to Apfelstrudel! 🥧\n// Press Play or Ctrl+Enter, or ask the AI!\n\ns(\"bd sd\").bank(\"RolandTR808\")";
+  const defaultCode = `// Welcome to Apfelstrudel! 🥧
+// Press Play or Ctrl+Enter, or ask the AI!
+
+stack(
+  s("bd [~ bd] sd [bd ~ ]"),
+  s("[~ hh]*4").gain(.6),
+  note("<c2 [c2 eb2] f2 [f2 ab2]>")
+    .s("sawtooth").lpf(600).decay(.15).sustain(0),
+  note("<[c4 eb4 g4] [f4 ab4 c5] [eb4 g4 bb4] [ab4 c5 eb5]>/2")
+    .s("triangle").gain(.35).delay(.25).room(.3)
+)`;
 
   // Wait for dynamic codemirror import, then set up editor
   await codemirrorReady;
@@ -622,10 +629,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         editPattern: (pat: unknown) =>
           (pat as { pianoroll: (opts: Record<string, unknown>) => unknown }).pianoroll({ ctx: drawCtx, cycles: 8, playhead: 0.5 }),
         prebake: async () => {
+          const webModule = await import("@strudel/web");
           const miniModule = await import("@strudel/mini");
           const webaudioModule = await import("@strudel/webaudio");
           const drawModule = await import("@strudel/draw");
-          await evalScope(miniModule, webaudioModule, drawModule);
+          await evalScope(webModule, miniModule, webaudioModule, drawModule);
+          // Register built-in synth oscillators (sawtooth, triangle, etc.) and ZZFX sounds
+          const regSynth = (webModule as Record<string, unknown>).registerSynthSounds as (() => void) | undefined;
+          const regZZFX = (webModule as Record<string, unknown>).registerZZFXSounds as (() => void) | undefined;
+          regSynth?.();
+          regZZFX?.();
           await ensureSamplesLoaded();
         },
       });
@@ -678,11 +691,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (strudelMirror) {
       // StrudelMirror has its own repl — just run prebake
       try {
+        const webModule = await import("@strudel/web");
         const miniModule = await import("@strudel/mini");
         const webaudioModule = await import("@strudel/webaudio");
         const drawModule = await import("@strudel/draw");
-        await evalScope(miniModule, webaudioModule, drawModule);
-        console.log("[Strudel] evalScope loaded for StrudelMirror");
+        await evalScope(webModule, miniModule, webaudioModule, drawModule);
+        const regSynth = (webModule as Record<string, unknown>).registerSynthSounds as (() => void) | undefined;
+        const regZZFX = (webModule as Record<string, unknown>).registerZZFXSounds as (() => void) | undefined;
+        regSynth?.();
+        regZZFX?.();
+        console.log("[Strudel] evalScope + synths loaded for StrudelMirror");
       } catch (err) {
         console.error("[Strudel] evalScope error:", err);
       }

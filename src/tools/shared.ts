@@ -29,9 +29,9 @@ export function getAppState(): AppState {
 
 /** Push an eval error into state, keeping at most 10. */
 export function pushEvalError(message: string): void {
-  const state = getAppState();
-  state.evalErrors.unshift({ message, timestamp: Date.now() });
-  if (state.evalErrors.length > 10) state.evalErrors.length = 10;
+  if (!appState) return;
+  appState.evalErrors.unshift({ message, timestamp: Date.now() });
+  if (appState.evalErrors.length > 10) appState.evalErrors.length = 10;
 }
 
 /** Clear eval errors (called after agent reads them). */

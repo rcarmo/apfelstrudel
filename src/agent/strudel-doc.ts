@@ -35,7 +35,7 @@ Common drums: bd, sd, hh, oh, cp, rim, cr, rd, ht, mt, lt, sh, cb, tb, perc, mis
 \`.n("0 1 2 3")\` — pick sample variant (0-indexed)
 \`s("bd:0 bd:1 bd:2")\` — colon syntax for variant selection
 
-The app loads the full tidalcycles/dirt-samples collection from GitHub at runtime.
+The app loads the full tidalcycles/dirt-samples collection (vendored locally for offline use).
 This includes hundreds of kits: 808, 808bd, 808sd, 808cy, 808oh, 808hc, 909, ab, arpy, bass, bass1-3,
 bd (24 variants), casio, clubkick, cp, cr, drum, drumtraks, east, electro1, feel, fm,
 future, gab, glitch, birds, bottle, amencutup, metal, jazz, and many more.
@@ -43,7 +43,10 @@ Use \`list_samples\` tool to get details about specific banks.
 
 #### Synths
 \`note("c3 e3 g3").s("sawtooth")\` — built-in waveforms
-Waveforms: sine, sawtooth, square, triangle, white, pink, brown
+Basic: sine, sawtooth, square, triangle (aliases: sin, saw, sqr, tri)
+Extended: supersaw, pulse, sbd (synth bass drum), bytebeat
+Noise: white, pink, brown
+ZZFX: zzfx, z_sine, z_sawtooth, z_triangle, z_square, z_tan, z_noise
 Default sound for \`note()\` is triangle.
 
 #### Notes & Pitch

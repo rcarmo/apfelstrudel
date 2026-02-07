@@ -44,10 +44,11 @@ export async function runAgent(userMessage: string, options: RunnerOptions): Pro
   // Build LLM client
   const client = buildClient(provider, model);
 
-  // Initialize conversation
+  // Initialize conversation — include current pattern so agent always has latest state
+  const currentPatternContext = `[Current pattern in editor:\n${initialState.pattern}\n]`;
   const messages: Message[] = [
     { role: "system", content: getSystemPrompt() },
-    { role: "user", content: userMessage },
+    { role: "user", content: `${currentPatternContext}\n\n${userMessage}` },
   ];
 
   // Broadcast that agent is thinking

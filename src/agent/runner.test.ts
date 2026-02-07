@@ -36,7 +36,8 @@ describe("runAgent", () => {
       getState: () => ({ pattern: 's("bd")', playing: false, cps: 0.5 }),
     });
 
-    expect(result).toBe("Echo: Hello agent");
+    expect(result).toContain("Echo:");
+    expect(result).toContain("Hello agent");
     expect(broadcasted.some((m) => m.type === "agent_thinking")).toBe(true);
     expect(broadcasted.some((m) => m.type === "agent_response")).toBe(true);
   });
@@ -64,7 +65,8 @@ describe("runAgent", () => {
       getState: () => ({ pattern: "", playing: false, cps: 0.5 }),
     });
 
-    expect(result).toBe("Echo: Test defaults");
+    expect(result).toContain("Echo:");
+    expect(result).toContain("Test defaults");
   });
 
   it("handles LLM errors gracefully", async () => {
@@ -91,7 +93,8 @@ describe("runAgent", () => {
       broadcast: (msg) => broadcasted.push(msg),
       getState: () => ({ pattern: "", playing: false, cps: 0.5 }),
     });
-    expect(result).toBe("Echo: quick");
+    expect(result).toContain("Echo:");
+    expect(result).toContain("quick");
   });
 
   it("executes tool calls and continues loop", async () => {
