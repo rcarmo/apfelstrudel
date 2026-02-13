@@ -8,6 +8,11 @@
 
 Apfelstrudel combines the expressive power of Strudel's live coding environment with an AI agent that can help you create, modify, and understand music patterns in real time.
 
+<p align="center">
+  <img src="docs/screenshot.png" alt="Apfelstrudel Interface" />
+</p>
+
+
 ## Features
 
 - 🎵 **Strudel Integration** — Full Strudel.cc live coding environment
