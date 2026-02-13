@@ -21,6 +21,8 @@ declare module "@strudel/mini" {
 declare module "@strudel/webaudio" {
   export function samples(...args: unknown[]): unknown;
   export function getAudioContext(): AudioContext;
+  export function setAudioContext(ctx: AudioContext): AudioContext;
+  export function initAudio(options?: Record<string, unknown>): Promise<void>;
   export const webaudioOutput: (...args: unknown[]) => unknown;
 }
 

@@ -9,7 +9,7 @@
  */
 
 import { initStrudel, controls, hush, evalScope, transpiler, samples, webaudioOutput } from "@strudel/web";
-import { getAudioContext } from "@strudel/webaudio";
+import { getAudioContext, setAudioContext, initAudio } from "@strudel/webaudio";
 
 // Dynamic import to prevent the entire app from failing if codemirror can't load.
 // The specifier is constructed via a variable to prevent Bun from hoisting it to a static import.
@@ -231,7 +231,7 @@ function handleServerMessage(message: ServerMessage): void {
       }
       break;
 
-    case "set_tempo":
+    case "set_cps":
       if (typeof message.cps === "number") {
         const bpm = Math.round((message.cps * 60) / 0.5);
         tempoInput.value = String(bpm);
@@ -617,6 +617,11 @@ stack(
   // Wait for dynamic codemirror import, then set up editor
   await codemirrorReady;
 
+  // Pre-create a low-latency AudioContext so Strudel doesn't fall back to
+  // the default "balanced" hint (which adds ~50-100ms of buffer latency).
+  const ctx = new AudioContext({ latencyHint: "interactive", sampleRate: 44100 });
+  setAudioContext(ctx);
+
   if (StrudelMirrorCtor) {
     try {
       strudelMirror = new StrudelMirrorCtor({
@@ -682,33 +687,21 @@ stack(
     document.removeEventListener("pointerdown", initOnGesture);
     document.removeEventListener("keydown", initOnGesture);
 
-    const ctx = getAudioContext();
-    if (ctx.state === "suspended") {
-      ctx.resume().catch((err) => console.warn("[Audio] Resume failed", err));
+    const audioCtx = getAudioContext();
+    if (audioCtx.state === "suspended") {
+      audioCtx.resume().catch((err) => console.warn("[Audio] Resume failed", err));
     }
+
+    // Load AudioWorklets + samples (prebake already ran evalScope & registered synths)
+    await initAudio();
     await ensureSamplesLoaded();
 
-    if (strudelMirror) {
-      // StrudelMirror has its own repl — just run prebake
-      try {
-        const webModule = await import("@strudel/web");
-        const miniModule = await import("@strudel/mini");
-        const webaudioModule = await import("@strudel/webaudio");
-        const drawModule = await import("@strudel/draw");
-        await evalScope(webModule, miniModule, webaudioModule, drawModule);
-        const regSynth = (webModule as Record<string, unknown>).registerSynthSounds as (() => void) | undefined;
-        const regZZFX = (webModule as Record<string, unknown>).registerZZFXSounds as (() => void) | undefined;
-        regSynth?.();
-        regZZFX?.();
-        console.log("[Strudel] evalScope + synths loaded for StrudelMirror");
-      } catch (err) {
-        console.error("[Strudel] evalScope error:", err);
-      }
-      updateStatus("Ready");
-    } else {
+    if (!strudelMirror) {
       // Fallback: init full REPL
       await initializeStrudel();
     }
+
+    updateStatus("Ready");
   };
   document.addEventListener("pointerdown", initOnGesture);
   document.addEventListener("keydown", initOnGesture);
