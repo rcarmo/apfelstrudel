@@ -1,4 +1,5 @@
 import OpenAI, { AzureOpenAI } from "openai";
+import Anthropic from "@anthropic-ai/sdk";
 import { DefaultAzureCredential, getBearerTokenProvider } from "@azure/identity";
 import type { ChatCompletionMessageParam, ChatCompletionTool } from "openai/resources/chat/completions";
 import type { LLMClient, Message, ToolCallDescriptor, ToolDefinition } from "../shared/types.ts";
@@ -55,6 +56,106 @@ export class AzureOpenAIClient implements LLMClient {
   ): Promise<{ content: string | null; toolCalls?: ToolCallDescriptor[] }> {
     return generateFromOpenAI(this.client, this.model, messages, tools);
   }
+}
+
+/**
+ * Anthropic client using the official SDK
+ */
+export class AnthropicClient implements LLMClient {
+  private client: Anthropic;
+  private model: string;
+
+  constructor(model: string, apiKey: string) {
+    this.client = new Anthropic({ apiKey });
+    this.model = model;
+  }
+
+  async generate(
+    messages: Message[],
+    tools?: ToolDefinition[]
+  ): Promise<{ content: string | null; toolCalls?: ToolCallDescriptor[] }> {
+    // Extract system message
+    const systemMsg = messages.find((m) => m.role === "system");
+    const nonSystemMessages = messages.filter((m) => m.role !== "system");
+
+    const response = await this.client.messages.create({
+      model: this.model,
+      max_tokens: 4096,
+      system: systemMsg?.content ?? undefined,
+      messages: toAnthropicMessages(nonSystemMessages),
+      tools: tools?.map(toAnthropicTool),
+    });
+
+    let textContent: string | null = null;
+    const toolCalls: ToolCallDescriptor[] = [];
+
+    for (const block of response.content) {
+      if (block.type === "text") {
+        textContent = block.text;
+      } else if (block.type === "tool_use") {
+        toolCalls.push({
+          id: block.id,
+          name: block.name,
+          arguments: (block.input as Record<string, unknown>) ?? {},
+        });
+      }
+    }
+
+    return {
+      content: textContent,
+      toolCalls: toolCalls.length > 0 ? toolCalls : undefined,
+    };
+  }
+}
+
+function toAnthropicMessages(messages: Message[]): Anthropic.MessageParam[] {
+  const result: Anthropic.MessageParam[] = [];
+
+  for (const m of messages) {
+    if (m.role === "user") {
+      result.push({ role: "user", content: m.content ?? "" });
+    } else if (m.role === "assistant") {
+      const content: Anthropic.ContentBlockParam[] = [];
+      if (m.content) {
+        content.push({ type: "text", text: m.content });
+      }
+      if (m.tool_calls) {
+        for (const call of m.tool_calls) {
+          content.push({
+            type: "tool_use",
+            id: call.id,
+            name: call.name,
+            input: call.arguments,
+          });
+        }
+      }
+      result.push({ role: "assistant", content });
+    } else if (m.role === "tool") {
+      // Anthropic expects tool results as user messages with tool_result content blocks.
+      // Consecutive tool messages should be grouped into a single user message.
+      const lastMsg = result[result.length - 1];
+      const toolResultBlock: Anthropic.ToolResultBlockParam = {
+        type: "tool_result",
+        tool_use_id: m.tool_call_id ?? "",
+        content: m.content ?? "",
+      };
+      if (lastMsg?.role === "user" && Array.isArray(lastMsg.content)) {
+        (lastMsg.content as Anthropic.ContentBlockParam[]).push(toolResultBlock);
+      } else {
+        result.push({ role: "user", content: [toolResultBlock] });
+      }
+    }
+  }
+
+  return result;
+}
+
+function toAnthropicTool(tool: ToolDefinition): Anthropic.Tool {
+  return {
+    name: tool.name,
+    description: tool.description,
+    input_schema: tool.parameters as Anthropic.Tool.InputSchema,
+  };
 }
 
 async function generateFromOpenAI(
@@ -121,6 +222,14 @@ export function buildClient(provider: string, model: string): LLMClient {
     }
 
     return new AzureOpenAIClient(deployment, client);
+  }
+
+  if (provider === "anthropic") {
+    const apiKey = process.env.ANTHROPIC_API_KEY;
+    if (!apiKey) {
+      throw new Error("Anthropic requires ANTHROPIC_API_KEY environment variable");
+    }
+    return new AnthropicClient(model, apiKey);
   }
 
   // Default: OpenAI
