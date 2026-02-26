@@ -60,9 +60,12 @@ AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com
 AZURE_OPENAI_KEY=...
 AZURE_OPENAI_DEPLOYMENT=gpt-4o-mini
 
+# Or Anthropic
+ANTHROPIC_API_KEY=sk-ant-...
+
 # Optional settings
-APFELSTRUDEL_PROVIDER=openai  # or "azure"
-APFELSTRUDEL_MODEL=gpt-4o-mini
+APFELSTRUDEL_PROVIDER=openai  # or "azure" or "anthropic"
+APFELSTRUDEL_MODEL=gpt-4o-mini  # or claude-sonnet-4-20250514 for Anthropic
 APFELSTRUDEL_MAX_STEPS=16
 PORT=3000
 ```
