@@ -12,6 +12,7 @@ describe("buildClient", () => {
     process.env.AZURE_OPENAI_API_KEY = undefined;
     process.env.AZURE_OPENAI_DEPLOYMENT = undefined;
     process.env.AZURE_OPENAI_API_VERSION = undefined;
+    process.env.APFELSTRUDEL_LMSTUDIO_HOST = undefined;
   });
 
   it("returns echo client for echo provider", () => {
@@ -70,6 +71,19 @@ describe("buildClient", () => {
     process.env.AZURE_OPENAI_API_KEY = "test-key";
     process.env.AZURE_OPENAI_DEPLOYMENT = "gpt-4";
     const client = buildClient("azure", "gpt-4");
+    expect(client).toBeDefined();
+    expect(typeof client.generate).toBe("function");
+  });
+
+  it("creates lmstudio client", () => {
+    const client = buildClient("lmstudio", "qwen3.5-35b-a3b");
+    expect(client).toBeDefined();
+    expect(typeof client.generate).toBe("function");
+  });
+
+  it("creates lmstudio client with custom host", () => {
+    process.env.APFELSTRUDEL_LMSTUDIO_HOST = "http://my-custom-host:1234/v1";
+    const client = buildClient("lmstudio", "qwen3.5-35b-a3b");
     expect(client).toBeDefined();
     expect(typeof client.generate).toBe("function");
   });

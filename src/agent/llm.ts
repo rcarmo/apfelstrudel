@@ -123,6 +123,12 @@ export function buildClient(provider: string, model: string): LLMClient {
     return new AzureOpenAIClient(deployment, client);
   }
 
+  if (provider === "lmstudio") {
+    const baseURL = process.env.APFELSTRUDEL_LMSTUDIO_HOST || "http://localhost:1234/v1";
+    const apiKey = "lm-studio"; // LM Studio doesn't require a real key
+    return new OpenAIClient(model, apiKey, baseURL);
+  }
+
   // Default: OpenAI
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) {
