@@ -284,6 +284,29 @@ html, body {
   color: var(--text-primary);
 }
 
+.tab-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  background: var(--bg-secondary);
+  margin-left: auto; /* Push to the right */
+  position: sticky;
+  right: 0;
+  z-index: 10;
+  border-left: 1px solid var(--border-color);
+  box-shadow: -5px 0 5px rgba(0,0,0,0.2);
+}
+
+.tab-action:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
 .status {
   padding: 0.25rem 0.5rem;
   background: var(--bg-tertiary);

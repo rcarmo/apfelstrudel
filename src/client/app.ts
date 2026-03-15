@@ -201,6 +201,27 @@ function renderTabs(): void {
     }
   };
   tabsContainer.appendChild(saveTabEl);
+
+  // Spacer and Copy button
+  const spacer = document.createElement("div");
+  spacer.style.flex = "1";
+  tabsContainer.appendChild(spacer);
+
+  const copyTabEl = document.createElement("div");
+  copyTabEl.className = "tab-action";
+  copyTabEl.innerHTML = "📋";
+  copyTabEl.title = "Copy to clipboard";
+  copyTabEl.onclick = () => {
+    const code = getEditorCode();
+    navigator.clipboard.writeText(code).then(() => {
+      const originalHtml = copyTabEl.innerHTML;
+      copyTabEl.innerHTML = "✅";
+      setTimeout(() => { copyTabEl.innerHTML = originalHtml; }, 2000);
+    }).catch(err => {
+      console.error("Clipboard copy failed:", err);
+    });
+  };
+  tabsContainer.appendChild(copyTabEl);
 }
 
 async function handleCloseTab(tab: Tab): Promise<void> {
