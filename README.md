@@ -61,10 +61,15 @@ AZURE_OPENAI_KEY=...
 AZURE_OPENAI_DEPLOYMENT=gpt-4o-mini
 
 # Optional settings
-APFELSTRUDEL_PROVIDER=openai  # or "azure"
+APFELSTRUDEL_PROVIDER=openai  # "azure" or "lmstudio"
 APFELSTRUDEL_MODEL=gpt-4o-mini
 APFELSTRUDEL_MAX_STEPS=16
 PORT=3000
+
+# For LMStudio
+# APFELSTRUDEL_PROVIDER=lmstudio
+# APFELSTRUDEL_MODEL=your-local-model-name
+# APFELSTRUDEL_LMSTUDIO_HOST=http://localhost:1234/v1
 ```
 
 ### Running

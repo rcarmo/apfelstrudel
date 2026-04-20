@@ -217,6 +217,9 @@ docker-run: ## Run Docker container
 		-e AZURE_OPENAI_ENDPOINT \
 		-e AZURE_OPENAI_KEY \
 		-e AZURE_OPENAI_DEPLOYMENT \
+		-e APFELSTRUDEL_PROVIDER \
+		-e APFELSTRUDEL_MODEL \
+		-e APFELSTRUDEL_LMSTUDIO_HOST \
 		$(IMAGE_NAME):$(IMAGE_TAG)
 
 # =============================================================================
@@ -234,9 +237,9 @@ update: ## Update dependencies
 .PHONY: env-check
 env-check: ## Verify required environment variables
 	@echo "Checking environment variables..."
-	@if [ -z "$$OPENAI_API_KEY" ] && [ -z "$$AZURE_OPENAI_KEY" ]; then \
-		echo "⚠️  Warning: Neither OPENAI_API_KEY nor AZURE_OPENAI_KEY is set"; \
+	@if [ -z "$$OPENAI_API_KEY" ] && [ -z "$$AZURE_OPENAI_KEY" ] && [ "$$APFELSTRUDEL_PROVIDER" != "lmstudio" ]; then \
+		echo "⚠️  Warning: Neither OPENAI_API_KEY nor AZURE_OPENAI_KEY is set, and provider is not lmstudio"; \
 		echo "   Set one of these for the agent to work"; \
 	else \
-		echo "✓ LLM API key configured"; \
+		echo "✓ LLM provider configured"; \
 	fi
