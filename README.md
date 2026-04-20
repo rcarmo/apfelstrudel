@@ -4,6 +4,18 @@
   <img src="docs/icon-256.png" alt="Apfelstrudel icon" width="256" />
 </p>
 
+## Summary of Changes (Enhanced Fork)
+
+This fork introduces several significant features to the original project:
+
+- 📑 **Multi-Tab Support** — Work on multiple musical scripts simultaneously with a tabbed editor interface.
+- 💾 **Session Persistence** — Automatically saves and reloads all tabs and their content across server restarts.
+- 🕒 **Undo/Redo System** — Comprehensive history management (up to 100 steps per tab) with automatic backups before AI modifications.
+- 📂 **Enhanced File Operations** — "Read from file" and "Save to file" with native dialog support and automatic tab renaming.
+- 🤖 **LM Studio Integration** — Support for local LLMs via LM Studio (API-compatible with OpenAI).
+- ✏️ **Tab Customization** — Rename tabs via double-click to stay organized.
+- ↩️ **UX Improvements** — Dedicated Undo/Redo buttons and streamlined workflow.
+
 > Live coding music with AI assistance — powered by [Strudel.cc](https://strudel.cc) and [Bun](https://bun.sh)
 
 Apfelstrudel combines the expressive power of Strudel's live coding environment with an AI agent that can help you create, modify, and understand music patterns in real time.

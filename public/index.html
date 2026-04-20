@@ -49,13 +49,23 @@
       <section class="editor-pane">
         <div class="pane-header">
           <span>Pattern Editor</span>
-          <span class="status" id="status-indicator">Ready</span>
+          <div class="header-tools">
+            <button id="btn-undo" class="btn-icon" title="Undo (Ctrl+Z)">↩️</button>
+            <button id="btn-redo" class="btn-icon" title="Redo (Ctrl+Y)">↪️</button>
+            <span class="status" id="status-indicator">Ready</span>
+          </div>
+        </div>
+        <div id="tabs-container" class="tabs-container">
+          <!-- Tabs injected by JS -->
         </div>
         <div id="strudel-container">
           <div id="code-editor"></div>
         </div>
         <div id="visualization"></div>
       </section>
+
+      <!-- Hidden file input for "Read from file" -->
+      <input type="file" id="file-input" style="display: none" accept=".js,.strudel,.txt">
 
       <!-- Resize handle -->
       <div class="resize-handle" id="resize-handle"></div>

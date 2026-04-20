@@ -31,11 +31,31 @@ interface ServerMessage {
   [key: string]: unknown;
 }
 
+interface Tab {
+  id: string;
+  title: string;
+  content: string;
+}
+
+interface SessionState {
+  tabs: Tab[];
+  activeTabId: string;
+}
+
+interface HistoryState {
+  past: string[];
+  future: string[];
+}
+
 // biome-ignore lint/suspicious/noExplicitAny: CodeMirror EditorView type from vendored module
 type EditorView = any;
 
 // DOM Elements
 const editorRoot = document.getElementById("code-editor") as HTMLDivElement;
+const tabsContainer = document.getElementById("tabs-container") as HTMLDivElement;
+const fileInput = document.getElementById("file-input") as HTMLInputElement;
+const btnUndo = document.getElementById("btn-undo") as HTMLButtonElement;
+const btnRedo = document.getElementById("btn-redo") as HTMLButtonElement;
 const chatMessages = document.getElementById("chat-messages") as HTMLDivElement;
 const chatForm = document.getElementById("chat-form") as HTMLFormElement;
 const chatInput = document.getElementById("chat-input") as HTMLTextAreaElement;
@@ -88,6 +108,10 @@ let isPlaying = false;
 let reconnectAttempts = 0;
 const maxReconnectAttempts = 5;
 
+let sessionState: SessionState = { tabs: [], activeTabId: "" };
+const historyStack: { [tabId: string]: HistoryState } = {};
+let lastSetCode = ""; // To track what we last set programmatically
+
 // Strudel + CodeMirror instances
 let strudelRepl: Awaited<ReturnType<typeof initStrudel>> | null = null;
 let strudelInitPromise: Promise<void> | null = null;
@@ -104,6 +128,7 @@ function getEditorCode(): string {
 
 /** Set the code in the CodeMirror editor (or fallback textarea) */
 function setEditorCode(code: string): void {
+  lastSetCode = code;
   if (editorView) {
     editorView.dispatch({
       changes: { from: 0, to: editorView.state.doc.length, insert: code },
@@ -112,6 +137,186 @@ function setEditorCode(code: string): void {
   }
   const fb = document.getElementById("code-editor-fallback") as HTMLTextAreaElement | null;
   if (fb) fb.value = code;
+}
+
+/** Render the tab bar */
+function renderTabs(): void {
+  tabsContainer.innerHTML = "";
+
+  sessionState.tabs.forEach((tab) => {
+    const tabEl = document.createElement("div");
+    tabEl.className = `tab ${tab.id === sessionState.activeTabId ? "active" : ""}`;
+
+    const titleEl = document.createElement("span");
+    titleEl.className = "tab-title";
+    titleEl.textContent = tab.title;
+    titleEl.onclick = () => {
+      if (tab.id !== sessionState.activeTabId) {
+        send({ type: "switch_tab", id: tab.id });
+      }
+    };
+    titleEl.ondblclick = (e) => {
+      e.stopPropagation();
+      const newTitle = prompt("Enter new tab title:", tab.title);
+      if (newTitle && newTitle.trim()) {
+        send({ type: "rename_tab", id: tab.id, title: newTitle.trim() });
+      }
+    };
+
+    const closeEl = document.createElement("span");
+    closeEl.className = "tab-close";
+    closeEl.textContent = "×";
+    closeEl.onclick = (e) => {
+      e.stopPropagation();
+      handleCloseTab(tab);
+    };
+
+    tabEl.appendChild(titleEl);
+    tabEl.appendChild(closeEl);
+    tabsContainer.appendChild(tabEl);
+  });
+
+  const addTabEl = document.createElement("div");
+  addTabEl.className = "tab-add";
+  addTabEl.textContent = "+";
+  addTabEl.title = "New Tab";
+  addTabEl.onclick = () => send({ type: "create_tab" });
+  tabsContainer.appendChild(addTabEl);
+
+  const readTabEl = document.createElement("div");
+  readTabEl.className = "tab-add";
+  readTabEl.innerHTML = "📂";
+  readTabEl.title = "Read from file";
+  readTabEl.onclick = () => fileInput.click();
+  tabsContainer.appendChild(readTabEl);
+
+  const saveTabEl = document.createElement("div");
+  saveTabEl.className = "tab-add";
+  saveTabEl.innerHTML = "💾";
+  saveTabEl.title = "Save to file";
+  saveTabEl.onclick = async () => {
+    const activeTab = sessionState.tabs.find(t => t.id === sessionState.activeTabId);
+    if (activeTab) {
+      await downloadFile(`${activeTab.title}.strudel`, activeTab.content);
+    }
+  };
+  tabsContainer.appendChild(saveTabEl);
+
+  // Spacer and Copy button
+  const spacer = document.createElement("div");
+  spacer.style.flex = "1";
+  tabsContainer.appendChild(spacer);
+
+  const copyTabEl = document.createElement("div");
+  copyTabEl.className = "tab-action";
+  copyTabEl.innerHTML = "📋";
+  copyTabEl.title = "Copy to clipboard";
+  copyTabEl.onclick = () => {
+    const code = getEditorCode();
+    navigator.clipboard.writeText(code).then(() => {
+      const originalHtml = copyTabEl.innerHTML;
+      copyTabEl.innerHTML = "✅";
+      setTimeout(() => { copyTabEl.innerHTML = originalHtml; }, 2000);
+    }).catch(err => {
+      console.error("Clipboard copy failed:", err);
+    });
+  };
+  tabsContainer.appendChild(copyTabEl);
+}
+
+async function handleCloseTab(tab: Tab): Promise<void> {
+  if (sessionState.tabs.length <= 1) return;
+  const save = confirm(`Do you want to save the script "${tab.title}" to a file before closing?`);
+  if (save) {
+    await downloadFile(`${tab.title}.strudel`, tab.content);
+  }
+  send({ type: "close_tab", id: tab.id });
+}
+
+async function downloadFile(filename: string, content: string): Promise<void> {
+  // Try using File System Access API first for a real "Save As" dialog
+  if ("showSaveFilePicker" in window) {
+    try {
+      const handle = await (window as any).showSaveFilePicker({
+        suggestedName: filename,
+        types: [
+          {
+            description: "Strudel Script",
+            accept: { "text/javascript": [".strudel", ".js", ".txt"] },
+          },
+        ],
+      });
+      const writable = await handle.createWritable();
+      await writable.write(content);
+      await writable.close();
+      return;
+    } catch (err: any) {
+      if (err.name === "AbortError") return;
+      console.error("File System Access API failed, falling back to download:", err);
+    }
+  }
+
+  // Fallback to traditional download
+  const blob = new Blob([content], { type: "text/javascript" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+/** History Management (Undo/Redo) */
+function getHistory(tabId: string): HistoryState {
+  if (!historyStack[tabId]) {
+    historyStack[tabId] = { past: [], future: [] };
+  }
+  return historyStack[tabId];
+}
+
+function pushHistory(tabId: string, content: string): void {
+  const h = getHistory(tabId);
+  if (h.past.length > 0 && h.past[h.past.length - 1] === content) return;
+  h.past.push(content);
+  if (h.past.length > 100) h.past.shift();
+  h.future = []; // Clear redo stack on new change
+  updateHistoryButtons();
+}
+
+function undo(): void {
+  const tabId = sessionState.activeTabId;
+  const h = getHistory(tabId);
+  if (h.past.length === 0) return;
+
+  const current = getEditorCode();
+  h.future.push(current);
+
+  const prev = h.past.pop()!;
+  setEditorCode(prev);
+  send({ type: "pattern_update", code: prev });
+  updateHistoryButtons();
+}
+
+function redo(): void {
+  const tabId = sessionState.activeTabId;
+  const h = getHistory(tabId);
+  if (h.future.length === 0) return;
+
+  const current = getEditorCode();
+  h.past.push(current);
+
+  const next = h.future.pop()!;
+  setEditorCode(next);
+  send({ type: "pattern_update", code: next });
+  updateHistoryButtons();
+}
+
+function updateHistoryButtons(): void {
+  const h = getHistory(sessionState.activeTabId);
+  btnUndo.disabled = h.past.length === 0;
+  btnRedo.disabled = h.future.length === 0;
+  btnUndo.style.opacity = btnUndo.disabled ? "0.3" : "1";
+  btnRedo.style.opacity = btnRedo.disabled ? "0.3" : "1";
 }
 
 /**
@@ -201,10 +406,28 @@ function handleServerMessage(message: ServerMessage): void {
   console.log("[WS] Received:", message.type);
 
   switch (message.type) {
+    case "session_update": {
+      const oldActiveId = sessionState.activeTabId;
+      sessionState = message.session as unknown as SessionState;
+      renderTabs();
+      updateHistoryButtons();
+      
+      if (sessionState.activeTabId !== oldActiveId) {
+        const activeTab = sessionState.tabs.find(t => t.id === sessionState.activeTabId);
+        if (activeTab) {
+          setEditorCode(activeTab.content);
+        }
+      }
+      break;
+    }
+
     case "sync_state":
       // Sync state from server
       if (message.pattern) {
-        setEditorCode(message.pattern as string);
+        const newCode = message.pattern as string;
+        if (newCode !== getEditorCode()) {
+          setEditorCode(newCode);
+        }
       }
       if (typeof message.playing === "boolean") {
         isPlaying = message.playing;
@@ -216,12 +439,17 @@ function handleServerMessage(message: ServerMessage): void {
       }
       break;
 
-    case "set_pattern":
-      setEditorCode(message.code as string);
+    case "set_pattern": {
+      const newCode = message.code as string;
+      if (newCode !== getEditorCode()) {
+        pushHistory(sessionState.activeTabId, getEditorCode());
+        setEditorCode(newCode);
+      }
       if (message.autoplay) {
         playPattern();
       }
       break;
+    }
 
     case "transport_control":
       if (message.action === "play") {
@@ -532,11 +760,40 @@ tempoInput.addEventListener("change", () => {
   }
 });
 
+// Undo button
+btnUndo.addEventListener("click", undo);
+
+// Redo button
+btnRedo.addEventListener("click", redo);
+
+// File input for Read from file
+fileInput.addEventListener("change", (e) => {
+  const file = (e.target as HTMLInputElement).files?.[0];
+  if (!file) return;
+
+  const fileName = file.name.replace(/\.[^/.]+$/, ""); // Remove extension
+
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    const content = event.target?.result as string;
+    if (content) {
+      pushHistory(sessionState.activeTabId, getEditorCode());
+      setEditorCode(content);
+      send({ type: "pattern_update", code: content });
+      send({ type: "rename_tab", id: sessionState.activeTabId, title: fileName });
+    }
+  };
+  reader.readAsText(file);
+});
+
 // Chat form
 chatForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const message = chatInput.value.trim();
   if (message) {
+    // Backup current code before AI might change it
+    pushHistory(sessionState.activeTabId, getEditorCode());
+    
     // Sync current editor content to server before agent runs
     send({ type: "pattern_update", code: getEditorCode() });
     addMessage("user", message);
@@ -561,6 +818,25 @@ document.addEventListener("keydown", (e) => {
     e.preventDefault();
     stopPattern();
     send({ type: "transport", action: "stop" });
+  }
+
+  // Ctrl/Cmd + Z for Undo
+  if ((e.ctrlKey || e.metaKey) && e.key === "z" && !e.shiftKey) {
+    if (document.activeElement !== chatInput) {
+      e.preventDefault();
+      undo();
+    }
+  }
+
+  // Ctrl/Cmd + Y or Ctrl+Shift+Z for Redo
+  if (
+    (e.ctrlKey || e.metaKey) && 
+    (e.key === "y" || (e.key === "Z" && e.shiftKey))
+  ) {
+    if (document.activeElement !== chatInput) {
+      e.preventDefault();
+      redo();
+    }
   }
 });
 
@@ -664,6 +940,19 @@ stack(
       safeArray(strudelMirror, "miniLocations");
       editorView = strudelMirror.editor;
       strudelMirror.reconfigureExtension?.("isPatternHighlightingEnabled", true);
+
+      // Listen for local changes
+      let updateTimeout: Timer | null = null;
+      strudelMirror.onUpdate?.((code: string) => {
+        if (code === lastSetCode) return; // Ignore programmatic sets
+        
+        if (updateTimeout) clearTimeout(updateTimeout);
+        updateTimeout = setTimeout(() => {
+          send({ type: "pattern_update", code });
+          updateTimeout = null;
+        }, 500);
+      });
+
       console.log("[Editor] StrudelMirror initialized");
     } catch (err) {
       console.error("[Editor] StrudelMirror init failed:", err);

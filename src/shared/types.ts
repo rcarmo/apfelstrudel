@@ -64,13 +64,6 @@ export interface ClientLog {
   context?: Record<string, unknown>;
 }
 
-export type ClientMessage =
-  | ClientChatMessage
-  | ClientPatternUpdate
-  | ClientTransport
-  | ClientSyncRequest
-  | ClientLog;
-
 export interface ServerAgentThinking {
   type: "agent_thinking";
   content: string;
@@ -123,6 +116,60 @@ export interface ServerError {
   message: string;
 }
 
+export interface Tab {
+  id: string;
+  title: string;
+  content: string;
+}
+
+export interface SessionState {
+  tabs: Tab[];
+  activeTabId: string;
+}
+
+export interface ClientCreateTab {
+  type: "create_tab";
+}
+
+export interface ClientCloseTab {
+  type: "close_tab";
+  id: string;
+}
+
+export interface ClientSwitchTab {
+  type: "switch_tab";
+  id: string;
+}
+
+export interface ClientUpdateTab {
+  type: "update_tab";
+  id: string;
+  content: string;
+}
+
+export interface ClientRenameTab {
+  type: "rename_tab";
+  id: string;
+  title: string;
+}
+
+export interface ServerSessionUpdate {
+  type: "session_update";
+  session: SessionState;
+}
+
+export type ClientMessage =
+  | ClientChatMessage
+  | ClientPatternUpdate
+  | ClientTransport
+  | ClientSyncRequest
+  | ClientLog
+  | ClientCreateTab
+  | ClientCloseTab
+  | ClientSwitchTab
+  | ClientUpdateTab
+  | ClientRenameTab;
+
 export type ServerMessage =
   | ServerAgentThinking
   | ServerAgentResponse
@@ -132,4 +179,6 @@ export type ServerMessage =
   | ServerTransportControl
   | ServerSetCps
   | ServerSyncState
-  | ServerError;
+  | ServerError
+  | ServerSessionUpdate;
+

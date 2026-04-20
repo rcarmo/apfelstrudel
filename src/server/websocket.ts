@@ -1,7 +1,8 @@
 import type { ServerWebSocket } from "bun";
 import { runAgent } from "../agent/index.ts";
-import type { ClientMessage, ServerMessage } from "../shared/types.ts";
+import type { ClientMessage, ServerMessage, SessionState, Tab } from "../shared/types.ts";
 import { pushEvalError } from "../tools/shared.ts";
+import { loadSession, saveSession } from "./session.ts";
 
 export interface WebSocketData {
   id: string;
@@ -11,16 +12,19 @@ export interface WebSocketData {
 const clients = new Map<string, ServerWebSocket<WebSocketData>>();
 
 // Shared state
-let currentPattern = `stack(
-  s("bd [~ bd] sd [bd ~ ]"),
-  s("[~ hh]*4").gain(.6),
-  note("<c2 [c2 eb2] f2 [f2 ab2]>")
-    .s("sawtooth").lpf(600).decay(.15).sustain(0),
-  note("<[c4 eb4 g4] [f4 ab4 c5] [eb4 g4 bb4] [ab4 c5 eb5]>/2")
-    .s("triangle").gain(.35).delay(.25).room(.3)
-)`;
+let sessionState: SessionState = await loadSession();
 let isPlaying = false;
 let cps = 0.5;
+
+// Debounced save
+let saveTimeout: Timer | null = null;
+function triggerSave() {
+  if (saveTimeout) clearTimeout(saveTimeout);
+  saveTimeout = setTimeout(() => {
+    saveSession(sessionState);
+    saveTimeout = null;
+  }, 1000);
+}
 
 /**
  * Broadcast a message to all connected clients
@@ -33,17 +37,29 @@ export function broadcast(message: ServerMessage): void {
 }
 
 /**
- * Get current app state
+ * Get current app state (for agent tools)
  */
 export function getState() {
-  return { pattern: currentPattern, playing: isPlaying, cps };
+  const activeTab = sessionState.tabs.find(t => t.id === sessionState.activeTabId);
+  return {
+    pattern: activeTab?.content || "",
+    playing: isPlaying,
+    cps
+  };
 }
 
 /**
  * Update server state. Called by tools via AppState setters.
  */
 export function updateState(updates: { pattern?: string; playing?: boolean; cps?: number }) {
-  if (updates.pattern !== undefined) currentPattern = updates.pattern;
+  if (updates.pattern !== undefined) {
+    const activeTab = sessionState.tabs.find(t => t.id === sessionState.activeTabId);
+    if (activeTab) {
+      activeTab.content = updates.pattern;
+      triggerSave();
+      broadcast({ type: "session_update", session: sessionState });
+    }
+  }
   if (updates.playing !== undefined) isPlaying = updates.playing;
   if (updates.cps !== undefined) cps = updates.cps;
 }
@@ -59,13 +75,19 @@ export const websocketHandlers = {
     console.log(`[WS] Client connected: ${id}`);
 
     // Send current state to new client
-    const syncMessage: ServerMessage = {
+    const activeTab = sessionState.tabs.find(t => t.id === sessionState.activeTabId);
+    
+    ws.send(JSON.stringify({
+      type: "session_update",
+      session: sessionState
+    } satisfies ServerMessage));
+    
+    ws.send(JSON.stringify({
       type: "sync_state",
-      pattern: currentPattern,
+      pattern: activeTab?.content || "",
       playing: isPlaying,
       cps,
-    };
-    ws.send(JSON.stringify(syncMessage));
+    } satisfies ServerMessage));
   },
 
   close(ws: ServerWebSocket<WebSocketData>) {
@@ -77,7 +99,7 @@ export const websocketHandlers = {
   async message(ws: ServerWebSocket<WebSocketData>, message: string | Buffer) {
     try {
       const data = JSON.parse(message.toString()) as ClientMessage;
-      console.log("[WS] Received:", data.type);
+      // console.log("[WS] Received:", data.type);
 
       switch (data.type) {
         case "chat":
@@ -98,28 +120,94 @@ export const websocketHandlers = {
           break;
         }
 
-        case "pattern_update":
-          currentPattern = data.code;
+        case "pattern_update": {
+          const activeTab = sessionState.tabs.find(t => t.id === sessionState.activeTabId);
+          if (activeTab) {
+            activeTab.content = data.code;
+            triggerSave();
+            // Optional: broadcast session update if needed, but usually only done on tab switch/create
+            // to avoid spamming. However, strictly speaking, all clients should see live edits.
+            // Let's broadcast to keep clients in sync.
+            broadcast({ type: "session_update", session: sessionState });
+          }
           break;
+        }
+
+        case "create_tab": {
+          const newTab: Tab = {
+            id: crypto.randomUUID(),
+            title: `Tab ${sessionState.tabs.length + 1}`,
+            content: "// New Pattern\n"
+          };
+          sessionState.tabs.push(newTab);
+          sessionState.activeTabId = newTab.id;
+          triggerSave();
+          broadcast({ type: "session_update", session: sessionState });
+          break;
+        }
+
+        case "close_tab": {
+          if (sessionState.tabs.length <= 1) return; // Prevent closing last tab
+          sessionState.tabs = sessionState.tabs.filter(t => t.id !== data.id);
+          if (sessionState.activeTabId === data.id) {
+            sessionState.activeTabId = sessionState.tabs[0].id;
+          }
+          triggerSave();
+          broadcast({ type: "session_update", session: sessionState });
+          break;
+        }
+
+        case "switch_tab": {
+          const target = sessionState.tabs.find(t => t.id === data.id);
+          if (target) {
+            sessionState.activeTabId = data.id;
+            triggerSave();
+            broadcast({ type: "session_update", session: sessionState });
+          }
+          break;
+        }
+
+        case "rename_tab": {
+          const tab = sessionState.tabs.find(t => t.id === data.id);
+          if (tab && data.title) {
+            tab.title = data.title;
+            triggerSave();
+            broadcast({ type: "session_update", session: sessionState });
+          }
+          break;
+        }
+
+        case "update_tab": {
+           const tab = sessionState.tabs.find(t => t.id === data.id);
+           if (tab) {
+             tab.content = data.content;
+             triggerSave();
+             broadcast({ type: "session_update", session: sessionState });
+           }
+           break;
+        }
 
         case "transport":
           isPlaying = data.action === "play";
           broadcast({ type: "transport_control", action: data.action });
           break;
 
-        case "sync_request":
+        case "sync_request": {
+          const activeTab = sessionState.tabs.find(t => t.id === sessionState.activeTabId);
           ws.send(
             JSON.stringify({
               type: "sync_state",
-              pattern: currentPattern,
+              pattern: activeTab?.content || "",
               playing: isPlaying,
               cps,
             } satisfies ServerMessage)
           );
+          ws.send(JSON.stringify({ type: "session_update", session: sessionState }));
           break;
+        }
 
         default:
-          console.log("[WS] Unknown message type:", data);
+          console.log("[WS] Unknown message type:", (data as any).type);
       }
     } catch (err) {
       console.error("[WS] Error processing message:", err);

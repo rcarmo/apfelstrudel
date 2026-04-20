@@ -1,0 +1,15 @@
+{
+  "tabs": [
+    {
+      "id": "default",
+      "title": "Расширенная мелодия",
+      "content": "stack(\n  n(\"<0 4 0 9 7>*16\")\n    .scale(\"g:minor\")\n    .trans(-12)\n    .o(3)\n    .s(\"sawtooth\")\n    .delay(.6)\n    .room(0.3)\n    .roomsize(0.7)\n    .lpf(sine.range(500, 3000).slow(2))\n    .pan(rand)\n    .fm(.8)\n    .fmwave('white'),\n  n(\"<7 _ _ 6 5 _ _ 6>*2\")\n    .scale(\"g:minor\")\n    .trans(-12)\n    .o(3)\n    .s(\"sawtooth\")\n    .delay(.6)\n    .room(0.3)\n    .roomsize(0.7)\n    .lpf(sine.range(500, 3000).slow(2))\n    .pan(rand)\n    .fm(.8)\n    .fmwave('white')\n    .gain(0.6),\n  n(\"<12 _ 12 _>*8\")\n    .scale(\"g:minor\")\n    .trans(-36)\n    .s(\"sine\")\n    .lpf(200)\n    .gain(0.5),\n  s(\"bd*4, hh*16, sd*4\").gain(0.4),\n  n(\"<0 2 4 7>*32\")\n    .scale(\"g:minor\")\n    .trans(-12)\n    .o(4)\n    .s(\"triangle\")\n    .fast(2)\n    .lpf(2500)\n    .gain(0.25)\n    .pan(sine.range(0, 1).slow(8)),\n  // Добавляем атмосферные звуки и вокальные элементы\n  s(\"padlong\").room(0.6).roomsize(0.9).lpf(800).gain(0.3),\n  s(\"angelpads\").room(0.5).roomsize(0.8).lpf(1200).gain(0.25).slow(2),\n  s(\"alien-monolith-pad\").room(0.7).roomsize(1.0).lpf(600).gain(0.35).slow(4),\n  // Новое: мягкий арпеджио для гармонии\n  n(\"<0 3 5>*8\")\n    .scale(\"g:minor\")\n    .trans(-12)\n    .o(4)\n    .s(\"triangle\")\n    .lpf(1500)\n    .gain(0.2)\n    .pan(sine.range(0, 1).slow(4))\n)"
+    },
+    {
+      "id": "b32ee594-e174-4c4d-843b-ee30f4c3a061",
+      "title": "Начальная мелодия",
+      "content": "// New Pattern\nstack(\n  n(\"<0 4 0 9 7>*16\"\n    .add(\"<7 _ _ 6 5 _ _ 6>*2\"))\n    .scale(\"g:minor\")\n    .trans(-12)\n    .o(3)\n    .s(\"sawtooth\")\n    .delay(.6)\n    .room(0.3)\n    .roomsize(0.7)\n    .lpf(sine.range(500, 3000).slow(2))\n    .pan(rand)\n    .fm(.8)\n    .fmwave('white'),\n  s(\"bd*4, hh*16, sd*4\").gain(0.4)\n)"
+    }
+  ],
+  "activeTabId": "default"
+}
